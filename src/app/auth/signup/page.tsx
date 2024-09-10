@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
 
-export default function SigupPage () {
+export default function SignupPage () {
   return (
     <Card className='w-full max-w-md'>
       <CardHeader>
