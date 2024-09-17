@@ -1,4 +1,4 @@
-import ProfessionalRegisterPage from '@/app/system/professional-register/professional-register';
+import ProfessionalRegisterPage from '@/app/system/persona-register/page';
 
 export default function SystemPage () {
   return <ProfessionalRegisterPage />;
