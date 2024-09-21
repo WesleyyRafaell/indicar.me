@@ -1,4 +1,4 @@
-import DashboardTemplate from '@/components/templates/dashboard/dashboard';
+import PerfilPage from '@/app/system/dashboard/perfil/page';
 import { checkIfPersonaHasType } from '@/services/actions/persona-register-actions';
 import { redirect } from 'next/navigation';
 
@@ -10,5 +10,5 @@ export default async function Dashboard () {
     redirect('/system/persona-register');
   }
 
-  return <DashboardTemplate />;
+  return <PerfilPage />;
 }
