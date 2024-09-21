@@ -69,7 +69,7 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
               <CardHeader className='p-2 pt-0 md:p-4'>
                 <CardTitle>Atualize para Pro</CardTitle>
                 <CardDescription>
-                  Desbloqueie as avaliações no seu perfil e aumente suas chances de ter
+                  Desbloqueie as avaliações no seu perfil e aumente as chances de ter
                   seu serviço contratado.
                 </CardDescription>
               </CardHeader>
@@ -131,7 +131,7 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
                   <CardHeader>
                     <CardTitle>Atualize para Pro</CardTitle>
                     <CardDescription>
-                      Desbloqueie as avaliações no seu perfil e deaumente suas chances de ter
+                      Desbloqueie as avaliações no seu perfil e deaumente as chances de ter
                       seu serviço contratado.
                     </CardDescription>
                   </CardHeader>
