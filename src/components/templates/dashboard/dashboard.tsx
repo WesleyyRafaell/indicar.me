@@ -1,3 +1,4 @@
+import NavLink from '@/components/atoms/nav-link/nav-link';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -29,6 +30,7 @@ export const description =
   'A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.';
 
 export default function DashboardTemplate ({ children }: PropsWithChildren) {
+
   return (
     <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
       <div className='hidden border-r bg-muted/40 md:block'>
@@ -41,27 +43,18 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
           </div>
           <div className='flex-1'>
             <nav className='grid items-start px-2 text-sm font-medium lg:px-4'>
-              <Link
-                href='/system/dashboard/perfil'
-                className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
-              >
+              <NavLink href='/system/dashboard/perfil'>
                 <Home className='size-4' />
                 Perfil
-              </Link>
-              <Link
-                href='/system/dashboard/my-reviews'
-                className='flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary'
-              >
+              </NavLink>
+              <NavLink href='/system/dashboard/my-reviews'>
                 <Handshake className='size-4' />
                 Minhas avaliações
-              </Link>
-              <Link
-                href='/system/dashboard/my-plan'
-                className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
-              >
+              </NavLink>
+              <NavLink href='/system/dashboard/my-plan'>
                 <DollarSign className='size-4' />
                 Meu plano
-              </Link>
+              </NavLink>
             </nav>
           </div>
           <div className='mt-auto p-4'>
@@ -104,27 +97,18 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
                   <Crown className='size-6 text-primary' />
                   <span className='sr-only text-primary'>Indicar.me</span>
                 </Link>
-                <Link
-                  href='/system/dashboard/perfil'
-                  className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
-                >
+                <NavLink href='/system/dashboard/perfil'>
                   <Home className='size-4' />
                   Perfil
-                </Link>
-                <Link
-                  href='/system/dashboard/my-reviews'
-                  className='flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary'
-                >
+                </NavLink>
+                <NavLink href='/system/dashboard/my-reviews'>
                   <Handshake className='size-4' />
                   Minhas avaliações
-                </Link>
-                <Link
-                  href='/system/dashboard/my-plan'
-                  className='flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary'
-                >
+                </NavLink>
+                <NavLink href='/system/dashboard/my-plan'>
                   <DollarSign className='size-4' />
                   Meu plano
-                </Link>
+                </NavLink>
               </nav>
               <div className='mt-auto'>
                 <Card>

@@ -55,6 +55,13 @@ model User {
   experience        String?
   state             String?
   typeProfessional  String?
+  tell              String?
+  cell              String?
+  aboutme           String?
+  facebook          String?
+  instagram         String?
+  whatsapp          String?
+  linkedin          String?
 
   accounts      Account[]
   sessions      Session[]

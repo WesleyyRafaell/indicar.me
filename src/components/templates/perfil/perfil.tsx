@@ -8,12 +8,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 import { professionalSchema } from '@/schemas/professional';
+import { updateUser } from '@/services/actions/user.actions';
 import { IProfessionalSelectPros } from '@/types/page/professional';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 
 const PerfilTemplate = (props: IProfessionalSelectPros) => {
+  const { toast } = useToast();
 
   const form = useForm<IProfessionalSelectPros>({
     resolver: zodResolver(professionalSchema),
@@ -24,12 +27,27 @@ const PerfilTemplate = (props: IProfessionalSelectPros) => {
       experience: props.experience,
       city: props.city,
       state: props.state,
+      tell: props?.tell || '',
+      cell: props?.cell || '',
+      aboutme: props?.aboutme || '',
+      facebook: props?.facebook || '',
+      whatsapp: props?.whatsapp || '',
+      instagram: props?.instagram || '',
+      linkedin: props?.linkedin || '',
     },
   });
 
   const { register, control, handleSubmit, formState: { errors } } = form;
 
   const onSubmit = async (values: IProfessionalSelectPros) => {
+
+    await updateUser(values);
+
+    toast({
+      className: 'bg-primary  text-white',
+      title: 'Sucesso',
+      description: 'Suas informações foram salvas.',
+    });
 
   };
 
