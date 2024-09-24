@@ -23,6 +23,7 @@ import {
   Handshake,
   Home,
   Menu,
+  Search,
 } from 'lucide-react';
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
@@ -43,9 +44,13 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
           </div>
           <div className='flex-1'>
             <nav className='grid items-start px-2 text-sm font-medium lg:px-4'>
+              <NavLink href='/system/dashboard/search'>
+                <Search className='size-4' />
+                Buscar profissional
+              </NavLink>
               <NavLink href='/system/dashboard/perfil'>
                 <Home className='size-4' />
-                Perfil
+                Meu Perfil
               </NavLink>
               <NavLink href='/system/dashboard/my-reviews'>
                 <Handshake className='size-4' />
@@ -97,17 +102,21 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
                   <Crown className='size-6 text-primary' />
                   <span className='sr-only text-primary'>Indicar.me</span>
                 </Link>
+                <NavLink href='/system/dashboard/search'>
+                  <Search className='size-4' />
+                    Buscar profissional
+                </NavLink>
                 <NavLink href='/system/dashboard/perfil'>
                   <Home className='size-4' />
-                  Perfil
+                    Meu Perfil
                 </NavLink>
                 <NavLink href='/system/dashboard/my-reviews'>
                   <Handshake className='size-4' />
-                  Minhas avaliações
+                    Minhas avaliações
                 </NavLink>
                 <NavLink href='/system/dashboard/my-plan'>
                   <DollarSign className='size-4' />
-                  Meu plano
+                    Meu plano
                 </NavLink>
               </nav>
               <div className='mt-auto'>
