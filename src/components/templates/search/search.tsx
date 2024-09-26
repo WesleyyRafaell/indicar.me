@@ -1,11 +1,18 @@
+'use client';
+
 import Flex from '@/components/atoms/flex/flex';
+import Modal from '@/components/atoms/modal/modal';
+import ContactCard from '@/components/molecules/contact-card/contact-card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { auth } from '@/services/auth';
+import { Star } from 'lucide-react';
+import { useState } from 'react';
 
-const SearchTemplate = async () => {
-  const session = await auth();
+const SearchTemplate = () => {
+  const [ openContactModal, setOpenContactModal ] = useState(false);
+
   return (
     <div>
       <div className='mb-6 flex flex-col gap-2'>
@@ -18,11 +25,11 @@ const SearchTemplate = async () => {
         className='h-14 rounded-full'
         placeholder='O que você está buscando?'
       />
-      <Flex className='pt-7'>
-        <Card className='w-[500px] p-2'>
+      <Flex className='flex-wrap justify-between gap-5 pt-7'>
+        <Card className='w-[500px] p-4'>
           <Flex className='gap-2'>
             <Avatar>
-              <AvatarImage src={session?.user.image || ''} />
+              <AvatarImage src={''} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <Flex className='w-full flex-row justify-between'>
@@ -50,45 +57,41 @@ const SearchTemplate = async () => {
               Suspendisse vitae nulla mattis, finibus nulla vel, pharetra metus.
             </CardDescription>
           </Card>
-          <Flex className='mt-3 max-w-[300px] flex-col'>
-            <h3 className='text-base font-bold text-primary'>Contato</h3>
-            <Flex className='flex-col pt-2'>
-              <p className='text-sm font-bold text-primary'>Email</p>
-              <p className='text-sm font-bold text-slate-600'>rafaelsanto10s@gmail.com</p>
+          <Flex className='justify-between py-4'>
+            <Flex className='flex-col'>
+              <h3 className='text-base font-bold text-primary'>Hora de contratar?</h3>
+              <p className='text-sm text-slate-600'>Veja informações sobre contato</p>
+              <Button
+                variant='outline'
+                className='mt-[9px] text-slate-600'
+                onClick={() => setOpenContactModal(true)}
+              >
+                  Ver contato
+              </Button>
             </Flex>
-            <Flex className='justify-between'>
-              <Flex className='flex-col pt-2'>
-                <p className='text-sm font-bold text-primary'>Telefone</p>
-                <p className='text-sm font-bold text-slate-600'>98989101285</p>
+            <Flex className='flex-col gap-2'>
+              <Flex className='gap-3'>
+                <p className='text-4xl font-bold text-primary'>4,8</p>
+                <Flex className='flex-col'>
+                  <p className='text-slate-600'>1333 avaliações</p>
+                  <Flex className='gap-2'>
+                    <Star fill='yellow' size={20} />
+                    <Star fill='yellow' size={20} />
+                    <Star fill='yellow' size={20} />
+                    <Star fill='yellow' size={20} />
+                    <Star fill='yellow' size={20} />
+                  </Flex>
+                </Flex>
               </Flex>
-              <Flex className='flex-col pt-2'>
-                <p className='text-sm font-bold text-primary'>Celular</p>
-                <p className='text-sm font-bold text-slate-600'>98989101285</p>
-              </Flex>
+              <Button>Ver todas as avaliações</Button>
             </Flex>
-            <Flex className='justify-between'>
-              <Flex className='flex-col pt-2'>
-                <p className='text-sm font-bold text-primary'>Instagram</p>
-                <p className='text-sm font-bold text-slate-600'>weslieysanto</p>
-              </Flex>
-              <Flex className='flex-col pt-2'>
-                <p className='text-sm font-bold text-primary'>Facebook</p>
-                <p className='text-sm font-bold text-slate-600'>weslieysanto</p>
-              </Flex>
-            </Flex>
-            <Flex className='justify-between'>
-              <Flex className='flex-col pt-2'>
-                <p className='text-sm font-bold text-primary'>Linkedin</p>
-                <p className='text-sm font-bold text-slate-600'>weslieysanto</p>
-              </Flex>
-              <Flex className='flex-col pt-2'>
-                <p className='text-sm font-bold text-primary'>WhatsApp</p>
-                <p className='text-sm font-bold text-slate-600'>98989101285</p>
-              </Flex>
-            </Flex>
+
           </Flex>
         </Card>
       </Flex>
+      <Modal open={openContactModal} setOpen={setOpenContactModal} title='Contato'>
+        <ContactCard />
+      </Modal>
     </div>
   );
 };
