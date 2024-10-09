@@ -9,5 +9,5 @@ export default async function Dashboard () {
     redirect('/system/persona-register');
   }
 
-  redirect('/system/dashboard/perfil');
+  redirect('/system/dashboard/search');
 }

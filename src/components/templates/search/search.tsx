@@ -1,17 +1,13 @@
 'use client';
 
 import Flex from '@/components/atoms/flex/flex';
-import Modal from '@/components/atoms/modal/modal';
-import ContactCard from '@/components/molecules/contact-card/contact-card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Star } from 'lucide-react';
-import { useState } from 'react';
 
 const SearchTemplate = () => {
-  const [ openContactModal, setOpenContactModal ] = useState(false);
 
   return (
     <div>
@@ -40,6 +36,23 @@ const SearchTemplate = () => {
               <p className='max-w-[240px] font-semibold text-slate-600'>Pintor / Meses de experiencia</p>
             </Flex>
           </Flex>
+          <Flex className='justify-center py-4'>
+            <Flex className='flex-col gap-2'>
+              <Flex className='gap-3'>
+                <p className='text-4xl font-bold text-primary'>4,8</p>
+                <Flex className='flex-col'>
+                  <p className='text-slate-600'>1333 avaliações</p>
+                  <Flex className='gap-2'>
+                    <Star fill='yellow' size={20} />
+                    <Star fill='yellow' size={20} />
+                    <Star fill='yellow' size={20} />
+                    <Star fill='yellow' size={20} />
+                    <Star fill='yellow' size={20} />
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Flex>
+          </Flex>
           <Card className='mt-3 px-3 py-2'>
             <CardTitle className='text-base font-bold text-primary'>Um pouco sobre mim</CardTitle>
             <CardDescription className='max-h-[100px] overflow-scroll overflow-x-hidden'>
@@ -57,41 +70,13 @@ const SearchTemplate = () => {
               Suspendisse vitae nulla mattis, finibus nulla vel, pharetra metus.
             </CardDescription>
           </Card>
-          <Flex className='justify-between py-4'>
-            <Flex className='flex-col'>
-              <h3 className='text-base font-bold text-primary'>Hora de contratar?</h3>
-              <p className='text-sm text-slate-600'>Veja informações sobre contato</p>
-              <Button
-                variant='outline'
-                className='mt-[9px] text-slate-600'
-                onClick={() => setOpenContactModal(true)}
-              >
-                  Ver contato
-              </Button>
-            </Flex>
+          <Flex className='justify-center py-4'>
             <Flex className='flex-col gap-2'>
-              <Flex className='gap-3'>
-                <p className='text-4xl font-bold text-primary'>4,8</p>
-                <Flex className='flex-col'>
-                  <p className='text-slate-600'>1333 avaliações</p>
-                  <Flex className='gap-2'>
-                    <Star fill='yellow' size={20} />
-                    <Star fill='yellow' size={20} />
-                    <Star fill='yellow' size={20} />
-                    <Star fill='yellow' size={20} />
-                    <Star fill='yellow' size={20} />
-                  </Flex>
-                </Flex>
-              </Flex>
-              <Button>Ver todas as avaliações</Button>
+              <Button>Ver mais informações</Button>
             </Flex>
-
           </Flex>
         </Card>
       </Flex>
-      <Modal open={openContactModal} setOpen={setOpenContactModal} title='Contato'>
-        <ContactCard />
-      </Modal>
     </div>
   );
 };
