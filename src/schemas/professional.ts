@@ -15,3 +15,7 @@ export const professionalSchema = z.object({
   whatsapp: z.string(),
   linkedin: z.string(),
 });
+
+export const searchProfessionalSchema = z.object({
+  search: z.string().min(3, { message: 'Busca precisa de pelo menos 3 letras' }),
+});
