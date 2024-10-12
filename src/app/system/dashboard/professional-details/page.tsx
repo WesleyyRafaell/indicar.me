@@ -2,13 +2,43 @@
 
 import Flex from '@/components/atoms/flex/flex';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { getExperience } from '@/enum/professional';
+import { newReviewSchema } from '@/schemas/review';
+import { createNewReview } from '@/services/actions/reviews.action';
 import { useProfessionalDetailsStore } from '@/store/professional-details';
+import { INewReviewProps } from '@/types/page/review';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Star } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import ReactStars from 'react-rating-star-with-type';
 
 export default function ProfessionalDetailsPage () {
+  const form = useForm<INewReviewProps>({
+    resolver: zodResolver(newReviewSchema),
+  });
+
+  const { register, formState: { errors }, handleSubmit } = form;
+
+  const [ star, setStar ] = useState(5);
+
   const { professional } = useProfessionalDetailsStore();
+
+  const onChange = (nextValue: number) => {
+    setStar(nextValue);
+  };
+
+  const onSubmit = (values: INewReviewProps) => {
+    const { description } = values;
+
+    if (!professional?.id) return;
+
+    createNewReview({ rating: star, description, id: professional?.id });
+  };
 
   return (
     <Card className='p-4'>
@@ -70,23 +100,49 @@ export default function ProfessionalDetailsPage () {
         </CardDescription>
       </Card>
       <Flex className='mb-4 mt-10 w-full items-start justify-center'>
-        <Flex className='w-full flex-col items-center gap-4'>
+        <Flex className='w-full flex-col items-center gap-4 md:w-[450px]'>
           <Flex className='gap-3'>
             <p className='text-4xl font-bold text-primary'>4,8</p>
             <Flex className='flex-col'>
               <p className='text-slate-600'>1333 avaliações</p>
-              <Flex className='gap-2'>
-                <Star fill='yellow' size={20} />
-                <Star fill='yellow' size={20} />
-                <Star fill='yellow' size={20} />
-                <Star fill='yellow' size={20} />
-                <Star fill='yellow' size={20} />
-              </Flex>
+              <ReactStars
+                value={4.5}
+                isEdit={false}
+                activeColors={[ '#FFCE00' ]}
+                size={20}
+              />
             </Flex>
           </Flex>
+          <form className='my-5 w-full' onSubmit={handleSubmit(onSubmit)}>
+            <Flex className='w-full flex-col gap-5'>
+              <p className='font-semibold text-slate-600'>Nova avaliação</p>
+              <div className='flex w-full flex-col space-y-1.5'>
+                <Label htmlFor='description'>Seu nível de satisfação:</Label>
+                <ReactStars
+                  onChange={onChange}
+                  value={star}
+                  isEdit={true}
+                  activeColors={[ '#FFCE00' ]}
+                  size={20}
+                />
+              </div>
+              <div className='flex w-full flex-col space-y-1.5'>
+                <Label htmlFor='description'>Descrição</Label>
+                <Textarea
+                  id='description'
+                  placeholder='Sua avaliação aqui'
+                  {...register('description')}
+                />
+                <p className='text-xs text-red-600'>{errors?.description?.message || ''}</p>
+              </div>
+              <Flex className='w-full justify-center'>
+                <Button className='px-16'>Avaliar</Button>
+              </Flex>
+            </Flex>
+          </form>
           <Flex className='w-full flex-col items-center gap-5'>
             <Flex className='w-full flex-col rounded-sm border border-slate-300 p-2 md:w-[450px]'>
-              <p className='text-lg'>Lucas</p>
+              <p className='text-lg'>Lucass</p>
               <Flex className='w-full justify-between'>
                 <Flex className=''>
                   <Star fill='yellow' size={20} />

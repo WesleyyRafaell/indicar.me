@@ -1,3 +1,5 @@
+'use client';
+
 import NavLink from '@/components/atoms/nav-link/nav-link';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { SignOut } from '@/services/actions/auth-action';
 import {
   CircleUser,
   Crown,
@@ -31,6 +34,10 @@ export const description =
   'A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.';
 
 export default function DashboardTemplate ({ children }: PropsWithChildren) {
+
+  const handlerLogout = () => {
+    SignOut();
+  };
 
   return (
     <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
@@ -150,7 +157,7 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Meu plano</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={handlerLogout}>Sair</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

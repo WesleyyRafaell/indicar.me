@@ -63,10 +63,21 @@ model User {
   whatsapp          String?
   linkedin          String?
 
+  reviews       Reviews[]
   accounts      Account[]
   sessions      Session[]
 
   @@map("users")
+}
+
+model Reviews {
+  id                String    @id @default(cuid())
+  professional      User @relation(fields: [professionalId], references: [id])
+  professionalId    String
+  rating            Int
+  date              DateTime     @default(now())
+  description       String?
+  name              String
 }
 
 model VerificationToken {

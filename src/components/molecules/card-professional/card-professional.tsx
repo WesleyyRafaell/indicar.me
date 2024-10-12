@@ -65,8 +65,6 @@ const CardProfessional = (props: IProfessional) => {
       </Card>
       <Flex className='justify-center py-4'>
         <Flex className='flex-col gap-2'>
-          {/* <Link href={`/system/dashboard/professional-details/${props.id}`}>
-          </Link> */}
           <Button onClick={getProfessionalDetail}>Ver mais informações</Button>
         </Flex>
       </Flex>
