@@ -17,8 +17,8 @@ export async function createNewReview ({ rating, description, id }: ICreateRevie
       rating,
       description,
       date,
-      professional: {
-        create: {
+      user: {
+        connect: {
           id,
         },
       },
@@ -28,13 +28,16 @@ export async function createNewReview ({ rating, description, id }: ICreateRevie
   return review;
 }
 
-// export async function getReviews (id: string) {
+export async function getReviews (id: string) {
 
-//   const user = await prisma.user.findUnique({
-//     where: {
-//       id,
-//     },
-//   });
+  const reviews = await prisma.reviews.findMany({
+    where: {
+      userId: id,
+    },
+    orderBy: {
+      date: 'desc',
+    },
+  });
 
-//   return user;
-// }
+  return reviews;
+}
