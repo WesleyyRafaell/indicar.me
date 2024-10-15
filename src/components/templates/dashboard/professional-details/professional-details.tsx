@@ -11,6 +11,8 @@ import { toast } from '@/hooks/use-toast';
 import { newReviewSchema } from '@/schemas/review';
 import { createNewReview } from '@/services/actions/reviews.action';
 import { INewReviewProps, IProfessionalDetailsProps } from '@/types/page/review';
+import { formatDate } from '@/utils/date';
+import getMedia from '@/utils/number';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -112,11 +114,11 @@ export default function ProfessionalDetailsPage ({ reviews, professionalDetaisl 
       <Flex className='mb-4 mt-10 w-full items-start justify-center'>
         <Flex className='w-full flex-col items-center gap-4 md:w-[450px]'>
           <Flex className='gap-3'>
-            <p className='text-4xl font-bold text-primary'>4,8</p>
+            <p className='text-4xl font-bold text-primary'>{getMedia(reviews.map(item => item.rating))}</p>
             <Flex className='flex-col'>
-              <p className='text-slate-600'>1333 avaliações</p>
+              <p className='text-slate-600'>{reviews.length} avaliações</p>
               <ReactStars
-                value={4.5}
+                value={parseFloat(getMedia(reviews.map(item => item.rating)))}
                 isEdit={false}
                 activeColors={[ '#FFCE00' ]}
                 size={20}
@@ -161,7 +163,7 @@ export default function ProfessionalDetailsPage ({ reviews, professionalDetaisl 
                     activeColors={[ '#FFCE00' ]}
                     size={20}
                   />
-                  <p className='text-slate-600'>29/09/2024</p>
+                  <p className='text-slate-600'>{formatDate(review.date, 'dd/MM/yyyy')}</p>
                 </Flex>
                 <p className='mt-2 text-sm text-slate-600'>
                   {review.description}
