@@ -5,12 +5,27 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { getExperience } from '@/enum/professional';
+import { getReviews } from '@/services/actions/reviews.action';
+import { IReviewProps } from '@/types/actions/review';
 import { IProfessional } from '@/types/page/professional';
-import { Star } from 'lucide-react';
+import getMedia from '@/utils/number';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import ReactStars from 'react-rating-star-with-type';
 
 const CardProfessional = (props: IProfessional) => {
+  const [ reviews, setReviews ] = useState<IReviewProps[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    const getProfessionalReview = async () => {
+      const reviews = await getReviews(props.id);
+
+      setReviews(reviews);
+    };
+
+    getProfessionalReview();
+  }, [ props.id ]);
 
   return (
     <Card key={props.id} className='w-[500px] p-4'>
@@ -29,19 +44,20 @@ const CardProfessional = (props: IProfessional) => {
       </Flex>
       <Flex className='justify-center py-4'>
         <Flex className='flex-col gap-2'>
-          <Flex className='gap-3'>
-            <p className='text-4xl font-bold text-primary'>4,8</p>
-            <Flex className='flex-col'>
-              <p className='text-slate-600'>1333 avaliações</p>
-              <Flex className='gap-2'>
-                <Star fill='yellow' size={20} />
-                <Star fill='yellow' size={20} />
-                <Star fill='yellow' size={20} />
-                <Star fill='yellow' size={20} />
-                <Star fill='yellow' size={20} />
+          {reviews.length > 0 && (
+            <Flex className='gap-3'>
+              <p className='text-4xl font-bold text-primary'>{getMedia(reviews.map(item => item.rating))}</p>
+              <Flex className='flex-col'>
+                <p className='text-slate-600'>{reviews.length} avaliações</p>
+                <ReactStars
+                  value={parseFloat(getMedia(reviews.map(item => item.rating)))}
+                  isEdit={false}
+                  activeColors={[ '#FFCE00' ]}
+                  size={20}
+                />
               </Flex>
             </Flex>
-          </Flex>
+          )}
         </Flex>
       </Flex>
       <Card className='mt-3 px-3 py-2'>
