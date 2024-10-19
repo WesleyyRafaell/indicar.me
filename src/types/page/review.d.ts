@@ -14,6 +14,7 @@ export interface IReviewProps {
 }
 
 export interface IProfessionalDetailsProps {
-  reviews: IReviewProps[]
-  professionalDetaisl: IProfessional
+  reviews: IReviewProps[];
+  professionalDetails: IProfessional;
+  accountId: string;
 }

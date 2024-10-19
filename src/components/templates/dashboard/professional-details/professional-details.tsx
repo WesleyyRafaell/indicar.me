@@ -19,7 +19,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ReactStars from 'react-rating-star-with-type';
 
-export default function ProfessionalDetailsPage ({ reviews, professionalDetaisl }: IProfessionalDetailsProps) {
+export default function ProfessionalDetailsPage ({
+  reviews,
+  professionalDetails,
+  accountId,
+}: IProfessionalDetailsProps
+) {
   const router = useRouter();
   const form = useForm<INewReviewProps>({
     resolver: zodResolver(newReviewSchema),
@@ -36,9 +41,9 @@ export default function ProfessionalDetailsPage ({ reviews, professionalDetaisl 
   const onSubmit = (values: INewReviewProps) => {
     const { description } = values;
 
-    if (!professionalDetaisl?.id) return;
+    if (!professionalDetails?.id) return;
 
-    createNewReview({ rating: star, description, id: professionalDetaisl?.id });
+    createNewReview({ rating: star, description, id: professionalDetails?.id });
     toast({
       title: 'Sucesso',
       description: 'A sua avaliação foi salva com sucesso',
@@ -56,59 +61,59 @@ export default function ProfessionalDetailsPage ({ reviews, professionalDetaisl 
     <Card className='p-4'>
       <Flex className='flex-col items-center gap-2 sm:flex-row'>
         <Avatar>
-          <AvatarImage src={professionalDetaisl?.image || ''} />
+          <AvatarImage src={professionalDetails?.image || ''} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <Flex className='w-full flex-col items-center justify-between gap-2 sm:flex-row'>
           <Flex className='max-w-[240px] flex-col'>
-            <p className='font-semibold text-primary'>{professionalDetaisl?.name}</p>
-            <p className='text-sm text-slate-600'>{professionalDetaisl?.city} / {professionalDetaisl?.state}</p>
+            <p className='font-semibold text-primary'>{professionalDetails?.name}</p>
+            <p className='text-sm text-slate-600'>{professionalDetails?.city} / {professionalDetails?.state}</p>
           </Flex>
           <p className='max-w-[240px] font-semibold text-slate-600'>
-            {professionalDetaisl?.typeProfessional} / {getExperience(professionalDetaisl?.experience || '0')}
+            {professionalDetails?.typeProfessional} / {getExperience(professionalDetails?.experience || '0')}
           </p>
         </Flex>
       </Flex>
       <Flex className='mb-6 mt-3 w-full max-w-[300px] flex-col justify-center'>
         <Flex className='flex-col pt-2'>
           <p className='text-sm font-bold text-primary'>Email</p>
-          <p className='text-sm font-bold text-slate-600'>{professionalDetaisl?.email}</p>
+          <p className='text-sm font-bold text-slate-600'>{professionalDetails?.email}</p>
         </Flex>
         <Flex className='justify-between'>
           <Flex className='flex-col pt-2'>
             <p className='text-sm font-bold text-primary'>Telefone</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetaisl?.tell}</p>
+            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.tell}</p>
           </Flex>
           <Flex className='flex-col pt-2'>
             <p className='text-sm font-bold text-primary'>Celular</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetaisl?.cell}</p>
+            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.cell}</p>
           </Flex>
         </Flex>
         <Flex className='justify-between'>
           <Flex className='flex-col pt-2'>
             <p className='text-sm font-bold text-primary'>Instagram</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetaisl?.instagram}</p>
+            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.instagram}</p>
           </Flex>
           <Flex className='flex-col pt-2'>
             <p className='text-sm font-bold text-primary'>Facebook</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetaisl?.facebook}</p>
+            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.facebook}</p>
           </Flex>
         </Flex>
         <Flex className='justify-between'>
           <Flex className='flex-col pt-2'>
             <p className='text-sm font-bold text-primary'>Linkedin</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetaisl?.linkedin}</p>
+            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.linkedin}</p>
           </Flex>
           <Flex className='flex-col pt-2'>
             <p className='text-sm font-bold text-primary'>WhatsApp</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetaisl?.whatsapp}</p>
+            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.whatsapp}</p>
           </Flex>
         </Flex>
       </Flex>
       <Card className='mt-3 px-3 py-2'>
         <CardTitle className='text-base font-bold text-primary'>Um pouco sobre mim</CardTitle>
         <CardDescription className='max-h-[500px]'>
-          {professionalDetaisl?.aboutme}
+          {professionalDetails?.aboutme}
         </CardDescription>
       </Card>
       <Flex className='mb-4 mt-10 w-full items-start justify-center'>
@@ -125,33 +130,35 @@ export default function ProfessionalDetailsPage ({ reviews, professionalDetaisl 
               />
             </Flex>
           </Flex>
-          <form className='my-5 w-full' onSubmit={handleSubmit(onSubmit)}>
-            <Flex className='w-full flex-col gap-5'>
-              <p className='font-semibold text-slate-600'>Nova avaliação</p>
-              <div className='flex w-full flex-col space-y-1.5'>
-                <Label htmlFor='description'>Seu nível de satisfação:</Label>
-                <ReactStars
-                  onChange={onChange}
-                  value={star}
-                  isEdit={true}
-                  activeColors={[ '#FFCE00' ]}
-                  size={20}
-                />
-              </div>
-              <div className='flex w-full flex-col space-y-1.5'>
-                <Label htmlFor='description'>Descrição</Label>
-                <Textarea
-                  id='description'
-                  placeholder='Sua avaliação aqui'
-                  {...register('description')}
-                />
-                <p className='text-xs text-red-600'>{errors?.description?.message || ''}</p>
-              </div>
-              <Flex className='w-full justify-center'>
-                <Button className='px-16'>Avaliar</Button>
+          {professionalDetails?.id !== accountId && (
+            <form className='my-5 w-full' onSubmit={handleSubmit(onSubmit)}>
+              <Flex className='w-full flex-col gap-5'>
+                <p className='font-semibold text-slate-600'>Nova avaliação</p>
+                <div className='flex w-full flex-col space-y-1.5'>
+                  <Label htmlFor='description'>Seu nível de satisfação:</Label>
+                  <ReactStars
+                    onChange={onChange}
+                    value={star}
+                    isEdit={true}
+                    activeColors={[ '#FFCE00' ]}
+                    size={20}
+                  />
+                </div>
+                <div className='flex w-full flex-col space-y-1.5'>
+                  <Label htmlFor='description'>Descrição</Label>
+                  <Textarea
+                    id='description'
+                    placeholder='Sua avaliação aqui'
+                    {...register('description')}
+                  />
+                  <p className='text-xs text-red-600'>{errors?.description?.message || ''}</p>
+                </div>
+                <Flex className='w-full justify-center'>
+                  <Button className='px-16'>Avaliar</Button>
+                </Flex>
               </Flex>
-            </Flex>
-          </form>
+            </form>
+          )}
           <Flex className='w-full flex-col items-center gap-5'>
             {reviews.map(review => (
               <Flex key={review.id} className='w-full flex-col rounded-sm border border-slate-300 p-2 md:w-[450px]'>
