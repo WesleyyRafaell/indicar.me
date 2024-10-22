@@ -3,11 +3,11 @@
 import Flex from '@/components/atoms/flex/flex';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { typePersona } from '@/enum/persona';
 import { useToast } from '@/hooks/use-toast';
 import { professionalSchema } from '@/schemas/professional';
 import { updateUser } from '@/services/actions/user.actions';
@@ -21,12 +21,12 @@ const PerfilTemplate = (props: IProfessionalSelectPros) => {
   const form = useForm<IProfessionalSelectPros>({
     resolver: zodResolver(professionalSchema),
     defaultValues: {
-      name: props.name,
-      typeProfessional: props.typeProfessional,
-      email: props.email,
-      experience: props.experience,
-      city: props.city,
-      state: props.state,
+      name: props.name || '',
+      typeProfessional: props.typeProfessional || '',
+      email: props.email || '',
+      experience: props.experience || '',
+      city: props.city || '',
+      state: props.state || '',
       tell: props?.tell || '',
       cell: props?.cell || '',
       aboutme: props?.aboutme || '',
@@ -51,13 +51,31 @@ const PerfilTemplate = (props: IProfessionalSelectPros) => {
 
   };
 
-  return (
-    <div>
-      <Flex className='mb-8 flex-col gap-2'>
-        <h1 className='text-2xl font-bold text-primary'>Mantenha seu perfil atualizado</h1>
-        <p>Quanto mais informações você oferecer, maior são as chances do seu serviço ser contratado.</p>
-      </Flex>
-      <form onSubmit={handleSubmit(onSubmit)}>
+  const getHeaderByPersona = () => {
+    if (props.typePersona === typePersona.professional) {
+      return (
+        <Flex className='mb-8 flex-col gap-2'>
+          <h1 className='text-2xl font-bold text-primary'>Mantenha seu perfil atualizado</h1>
+          <p>Quanto mais informações você oferecer, maior são as chances do seu serviço ser contratado.</p>
+        </Flex>
+      );
+    }
+
+    if (props.typePersona === typePersona.user) {
+      return (
+        <Flex className='mb-8 flex-col gap-2'>
+          <h1 className='text-2xl font-bold text-primary'>Suas informações</h1>
+          <p>Estas são suas informações que ficarão visíveis para todos.</p>
+        </Flex>
+      );
+    }
+
+    return <></>;
+  };
+
+  const getFormFieldsByPersona = () => {
+    if (props.typePersona === typePersona.professional) {
+      return (
         <Flex className='flex-col gap-6'>
           <Flex className='w-full gap-5'>
             <Avatar>
@@ -141,19 +159,12 @@ const PerfilTemplate = (props: IProfessionalSelectPros) => {
           </Flex>
           <Flex className='w-full gap-5'>
             <div className='flex w-full flex-col space-y-1.5'>
-              <Label htmlFor='tell'>Telefone</Label>
+              <Label htmlFor='whatsapp'>Whatsapp</Label>
               <Input
-                id='tell'
+                id='whatsapp'
                 type='text'
-                {...register('tell')}
-              />
-            </div>
-            <div className='flex w-full flex-col space-y-1.5'>
-              <Label htmlFor='cell'>Celular</Label>
-              <Input
-                id='cell'
-                type='text'
-                {...register('cell')}
+                {...register('whatsapp')}
+                placeholder='ex: 98981151382'
               />
             </div>
           </Flex>
@@ -167,50 +178,52 @@ const PerfilTemplate = (props: IProfessionalSelectPros) => {
               />
             </div>
           </Flex>
-          <Card>
-            <CardHeader>
-              <CardTitle>Redes sociais</CardTitle>
-            </CardHeader>
-            <CardContent className='flex flex-col gap-6'>
-              <Flex className='w-full gap-6'>
-                <div className='flex w-full flex-col space-y-1.5'>
-                  <Label htmlFor='facebook'>Facebook</Label>
-                  <Input
-                    id='facebook'
-                    type='text'
-                    {...register('facebook')}
-                  />
-                </div>
-                <div className='flex w-full flex-col space-y-1.5'>
-                  <Label htmlFor='instagram'>Instagram</Label>
-                  <Input
-                    id='instagram'
-                    type='text'
-                    {...register('instagram')}
-                  />
-                </div>
-              </Flex>
-              <Flex className='w-full gap-6'>
-                <div className='flex w-full flex-col space-y-1.5'>
-                  <Label htmlFor='whatsapp'>Whatsapp</Label>
-                  <Input
-                    id='whatsapp'
-                    type='text'
-                    {...register('whatsapp')}
-                  />
-                </div>
-                <div className='flex w-full flex-col space-y-1.5'>
-                  <Label htmlFor='linkedin'>Linkedin</Label>
-                  <Input
-                    id='linkedin'
-                    type='text'
-                    {...register('linkedin')}
-                  />
-                </div>
-              </Flex>
-            </CardContent>
-          </Card>
-          <Button type='submit'>Salvar</Button>
+        </Flex>
+      );
+    }
+
+    if (props.typePersona === typePersona.user) {
+      return (
+        <Flex className='flex-col gap-6'>
+          <Flex className='w-full gap-5'>
+            <Avatar>
+              <AvatarImage src={props.image} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          </Flex>
+          <Flex className='w-full gap-5'>
+            <div className='flex w-full flex-col space-y-1.5'>
+              <Label htmlFor='name'>Nome</Label>
+              <Input
+                id='name'
+                type='text'
+                {...register('name')}
+              />
+            </div>
+            <div className='flex w-full flex-col space-y-1.5'>
+              <Label htmlFor='email'>Email</Label>
+              <Input
+                id='email'
+                type='email'
+                {...register('email')}
+                disabled
+              />
+            </div>
+          </Flex>
+        </Flex>
+      );
+    }
+
+    return <></>;
+  };
+
+  return (
+    <div>
+      {getHeaderByPersona()}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {getFormFieldsByPersona()}
+        <Flex className='mt-6 w-full justify-center'>
+          <Button className='w-[350px]' type='submit'>Salvar</Button>
         </Flex>
       </form>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import NavLink from '@/components/atoms/nav-link/nav-link';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -19,21 +20,21 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { SignOut } from '@/services/actions/auth-action';
+import { IDashboardTemplateProps } from '@/types/page/dashboard-template';
 import {
   CircleUser,
   Crown,
   DollarSign,
-  Handshake,
   Home,
   Menu,
   Search,
 } from 'lucide-react';
 import Link from 'next/link';
-import { PropsWithChildren } from 'react';
+
 export const description =
   'A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.';
 
-export default function DashboardTemplate ({ children }: PropsWithChildren) {
+export default function DashboardTemplate ({ children, image }: IDashboardTemplateProps) {
 
   const handlerLogout = () => {
     SignOut();
@@ -59,10 +60,10 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
                 <Home className='size-4' />
                 Meu Perfil
               </NavLink>
-              <NavLink href='/system/dashboard/my-reviews'>
+              {/* <NavLink href='/system/dashboard/my-reviews'>
                 <Handshake className='size-4' />
                 Minhas avaliações
-              </NavLink>
+              </NavLink> */}
               <NavLink href='/system/dashboard/my-plan'>
                 <DollarSign className='size-4' />
                 Meu plano
@@ -117,10 +118,10 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
                   <Home className='size-4' />
                     Meu Perfil
                 </NavLink>
-                <NavLink href='/system/dashboard/my-reviews'>
+                {/* <NavLink href='/system/dashboard/my-reviews'>
                   <Handshake className='size-4' />
                     Minhas avaliações
-                </NavLink>
+                </NavLink> */}
                 <NavLink href='/system/dashboard/my-plan'>
                   <DollarSign className='size-4' />
                     Meu plano
@@ -148,16 +149,24 @@ export default function DashboardTemplate ({ children }: PropsWithChildren) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant='secondary' size='icon' className='rounded-full'>
-                  <CircleUser className='size-5' />
+                  {image && (
+                    <Avatar>
+                      <AvatarImage src={image} />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  )}
+                  {!image && (
+                    <CircleUser className='size-5' />
+                  )}
                   <span className='sr-only'>Toggle user menu</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Meu plano</DropdownMenuItem>
+                <DropdownMenuItem className='cursor-pointer'>Meu plano</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handlerLogout}>Sair</DropdownMenuItem>
+                <DropdownMenuItem className='cursor-pointer' onClick={handlerLogout}>Sair</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

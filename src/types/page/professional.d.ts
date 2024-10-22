@@ -33,6 +33,7 @@ export interface IProfessionalSelectPros{
   instagram?: string;
   whatsapp?: string;
   linkedin?: string;
+  typePersona?: string;
 }
 
 export interface ISearchProfessionalProps {

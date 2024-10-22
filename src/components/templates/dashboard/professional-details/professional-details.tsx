@@ -14,6 +14,7 @@ import { INewReviewProps, IProfessionalDetailsProps } from '@/types/page/review'
 import { formatDate } from '@/utils/date';
 import getMedia from '@/utils/number';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -65,49 +66,14 @@ export default function ProfessionalDetailsPage ({
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <Flex className='w-full flex-col items-center justify-between gap-2 sm:flex-row'>
-          <Flex className='max-w-[240px] flex-col'>
+          <Flex className='flex-col'>
             <p className='font-semibold text-primary'>{professionalDetails?.name}</p>
             <p className='text-sm text-slate-600'>{professionalDetails?.city} / {professionalDetails?.state}</p>
+            <p className='text-sm text-slate-600'>{professionalDetails?.email}</p>
           </Flex>
           <p className='max-w-[240px] font-semibold text-slate-600'>
             {professionalDetails?.typeProfessional} / {getExperience(professionalDetails?.experience || '0')}
           </p>
-        </Flex>
-      </Flex>
-      <Flex className='mb-6 mt-3 w-full max-w-[300px] flex-col justify-center'>
-        <Flex className='flex-col pt-2'>
-          <p className='text-sm font-bold text-primary'>Email</p>
-          <p className='text-sm font-bold text-slate-600'>{professionalDetails?.email}</p>
-        </Flex>
-        <Flex className='justify-between'>
-          <Flex className='flex-col pt-2'>
-            <p className='text-sm font-bold text-primary'>Telefone</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.tell}</p>
-          </Flex>
-          <Flex className='flex-col pt-2'>
-            <p className='text-sm font-bold text-primary'>Celular</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.cell}</p>
-          </Flex>
-        </Flex>
-        <Flex className='justify-between'>
-          <Flex className='flex-col pt-2'>
-            <p className='text-sm font-bold text-primary'>Instagram</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.instagram}</p>
-          </Flex>
-          <Flex className='flex-col pt-2'>
-            <p className='text-sm font-bold text-primary'>Facebook</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.facebook}</p>
-          </Flex>
-        </Flex>
-        <Flex className='justify-between'>
-          <Flex className='flex-col pt-2'>
-            <p className='text-sm font-bold text-primary'>Linkedin</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.linkedin}</p>
-          </Flex>
-          <Flex className='flex-col pt-2'>
-            <p className='text-sm font-bold text-primary'>WhatsApp</p>
-            <p className='text-sm font-bold text-slate-600'>{professionalDetails?.whatsapp}</p>
-          </Flex>
         </Flex>
       </Flex>
       <Card className='mt-3 px-3 py-2'>
@@ -116,6 +82,16 @@ export default function ProfessionalDetailsPage ({
           {professionalDetails?.aboutme}
         </CardDescription>
       </Card>
+      <Flex className='my-6 w-full justify-center'>
+        <Link
+          href={`
+          https://api.whatsapp.com/send?phone=55${professionalDetails?.whatsapp}&text=Vim%20do%20indicar.me,%20estou%20em%20busca%20de%20um%20servi%C3%A7o,%20pode%20me%20ajudar?
+        `}
+          target='_blank'
+        >
+          <Button>Enviar mensagem</Button>
+        </Link>
+      </Flex>
       <Flex className='mb-4 mt-10 w-full items-start justify-center'>
         <Flex className='w-full flex-col items-center gap-4 md:w-[450px]'>
           <Flex className='gap-3'>
