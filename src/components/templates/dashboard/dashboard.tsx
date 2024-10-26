@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { typePersona } from '@/enum/persona';
 import { SignOut } from '@/services/actions/auth-action';
 import { IDashboardTemplateProps } from '@/types/page/dashboard-template';
 import {
@@ -34,7 +35,7 @@ import Link from 'next/link';
 export const description =
   'A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.';
 
-export default function DashboardTemplate ({ children, image }: IDashboardTemplateProps) {
+export default function DashboardTemplate ({ children, image, persona }: IDashboardTemplateProps) {
 
   const handlerLogout = () => {
     SignOut();
@@ -64,27 +65,32 @@ export default function DashboardTemplate ({ children, image }: IDashboardTempla
                 <Handshake className='size-4' />
                 Minhas avaliações
               </NavLink> */}
-              <NavLink href='/system/dashboard/my-plan'>
-                <DollarSign className='size-4' />
-                Meu plano
-              </NavLink>
+
+              {persona !== typePersona.user && (
+                <NavLink href='/system/dashboard/my-plan'>
+                  <DollarSign className='size-4' />
+                  Meu plano
+                </NavLink>
+              )}
             </nav>
           </div>
           <div className='mt-auto p-4'>
-            <Card x-chunk='dashboard-02-chunk-0'>
-              <CardHeader className='p-2 pt-0 md:p-4'>
-                <CardTitle>Atualize para Pro</CardTitle>
-                <CardDescription>
-                  Desbloqueie as avaliações no seu perfil e aumente as chances de ter
-                  seu serviço contratado.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className='p-2 pt-0 md:p-4 md:pt-0'>
-                <Button size='sm' className='w-full'>
-                  Conheça o pro
-                </Button>
-              </CardContent>
-            </Card>
+            {persona !== typePersona.user && (
+              <Card x-chunk='dashboard-02-chunk-0'>
+                <CardHeader className='p-2 pt-0 md:p-4'>
+                  <CardTitle>Atualize para Pro</CardTitle>
+                  <CardDescription>
+                    Desbloqueie as avaliações no seu perfil e aumente as chances de ter
+                    seu serviço contratado.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className='p-2 pt-0 md:p-4 md:pt-0'>
+                  <Button size='sm' className='w-full'>
+                    Conheça o pro
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>

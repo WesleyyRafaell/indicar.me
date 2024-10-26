@@ -6,12 +6,7 @@ import { IProfessionalSelectPros } from '@/types/page/professional';
 export async function getUser () {
   const session = await auth();
 
-  if (!session?.user?.id) {
-    return {
-      error: 'Not authorized',
-      data: null,
-    };
-  }
+  if (!session?.user?.id) return;
 
   const user = await prisma.user.findUnique({
     where: {
@@ -19,11 +14,7 @@ export async function getUser () {
     },
   });
 
-  if (!user) {
-    return false;
-  }
-
-  return user;
+  return user as IProfessionalSelectPros;
 }
 
 export async function updateUser (values: IProfessionalSelectPros) {
