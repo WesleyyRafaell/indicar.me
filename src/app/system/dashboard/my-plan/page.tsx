@@ -1,22 +1,27 @@
-'use client';
-
 import Flex from '@/components/atoms/flex/flex';
 import { Button } from '@/components/ui/button';
 import { createCheckoutSessionAction } from '@/services/actions/billing';
-import ReactStars from 'react-rating-star-with-type';
+import { auth } from '@/services/auth';
+import { getUserCurrentPlan } from '@/services/stripe/stripe';
+import { StarFilledIcon } from '@radix-ui/react-icons';
 
-const MyPlanPage = () => {
+const MyPlanPage = async () => {
+  const session = await auth();
+
+  const plan = await getUserCurrentPlan(session?.user.id as string);
+
   return (
     <Flex className='flex-wrap items-start gap-4 lg:gap-0'>
       <Flex className='max-w-[550px] flex-col gap-3 pr-5'>
-        <p className='text-lg text-primary'>Atualmente você está no plano Free.</p>
+        <p className='text-lg text-primary'>Atualmente você está no plano {plan.name}.</p>
         <h3 className='text-xl font-semibold text-slate-700'>Quer desbloquer avaliações no seu perfil?</h3>
-        <ReactStars
-          value={5}
-          isEdit={false}
-          activeColors={[ '#FFCE00' ]}
-          size={20}
-        />
+        <Flex className='gap-2'>
+          <StarFilledIcon width={30} height={30} color='#FFCE00' />
+          <StarFilledIcon width={30} height={30} color='#FFCE00' />
+          <StarFilledIcon width={30} height={30} color='#FFCE00' />
+          <StarFilledIcon width={30} height={30} color='#FFCE00' />
+          <StarFilledIcon width={30} height={30} color='#FFCE00' />
+        </Flex>
         <p>
         Profissionais com avaliações transmitem confiança,
         credibilidade e resultados comprovados. Feedbacks positivos funcionam como um portfólio
