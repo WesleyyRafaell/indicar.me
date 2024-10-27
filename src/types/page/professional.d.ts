@@ -34,6 +34,10 @@ export interface IProfessionalSelectPros{
   whatsapp?: string;
   linkedin?: string;
   typePersona?: string;
+  stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
+  stripeSubscriptionStatus?: string;
+  stripePriceId?: string;
 }
 
 export interface ISearchProfessionalProps {

@@ -1,4 +1,5 @@
 import { prisma } from '@/services/database';
+import { createStripeCustomer } from '@/services/stripe/stripe';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
@@ -28,6 +29,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  events: {
+    createUser: async (message) => {
+      await createStripeCustomer({
+        name: message.user.name || '',
+        email: message.user.email || '',
+      });
+    },
+  },
   secret: process.env.NEXTAUTH_URL,
   callbacks: {
     async session ({ session, token }) {

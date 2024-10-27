@@ -63,6 +63,11 @@ model User {
   whatsapp          String?
   linkedin          String?
 
+  stripeCustomerId         String?
+  stripeSubscriptionId     String?
+  stripeSubscriptionStatus String?
+  stripePriceId            String?
+
   reviews       Reviews[]
   accounts      Account[]
   sessions      Session[]
