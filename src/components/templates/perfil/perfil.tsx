@@ -80,7 +80,7 @@ const PerfilTemplate = (props: IProfessionalSelectPros) => {
           <Flex className='w-full gap-5'>
             <Avatar>
               <AvatarImage src={props.image} />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>FT</AvatarFallback>
             </Avatar>
           </Flex>
           <Flex className='w-full gap-5'>
@@ -188,7 +188,7 @@ const PerfilTemplate = (props: IProfessionalSelectPros) => {
           <Flex className='w-full gap-5'>
             <Avatar>
               <AvatarImage src={props.image} />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>FT</AvatarFallback>
             </Avatar>
           </Flex>
           <Flex className='w-full gap-5'>

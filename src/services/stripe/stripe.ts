@@ -192,7 +192,7 @@ export const getUserCurrentPlan = async (userId: string) => {
   const usage = (currentTasks / availableTasks) * 100;
 
   return {
-    name: plan.name,
+    name: plan.name as string,
     quota: {
       TASKS: {
         available: availableTasks,

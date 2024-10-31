@@ -158,7 +158,7 @@ export default function DashboardTemplate ({ children, image, persona }: IDashbo
                   {image && (
                     <Avatar>
                       <AvatarImage src={image} />
-                      <AvatarFallback>CN</AvatarFallback>
+                      <AvatarFallback>FT</AvatarFallback>
                     </Avatar>
                   )}
                   {!image && (

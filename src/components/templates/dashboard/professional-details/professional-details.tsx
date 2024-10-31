@@ -63,7 +63,7 @@ export default function ProfessionalDetailsPage ({
       <Flex className='flex-col items-center gap-2 sm:flex-row'>
         <Avatar>
           <AvatarImage src={professionalDetails?.image || ''} />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>FT</AvatarFallback>
         </Avatar>
         <Flex className='w-full flex-col items-center justify-between gap-2 sm:flex-row'>
           <Flex className='flex-col'>

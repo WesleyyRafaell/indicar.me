@@ -32,7 +32,7 @@ const CardProfessional = (props: IProfessional) => {
       <Flex className='flex-col items-center gap-2 md:flex-row'>
         <Avatar>
           <AvatarImage src={props?.image || ''} />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>FT</AvatarFallback>
         </Avatar>
         <Flex className='w-full flex-col items-center justify-between gap-3 text-center md:flex-row md:items-start md:gap-0 md:text-left'>
           <Flex className='w-full flex-col gap-1 md:w-[240px] md:gap-0'>
