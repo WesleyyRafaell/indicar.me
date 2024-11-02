@@ -35,7 +35,7 @@ import Link from 'next/link';
 export const description =
   'A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.';
 
-export default function DashboardTemplate ({ children, image, persona }: IDashboardTemplateProps) {
+export default function DashboardTemplate ({ children, image, persona, isPro }: IDashboardTemplateProps) {
 
   const handlerLogout = () => {
     SignOut();
@@ -74,24 +74,28 @@ export default function DashboardTemplate ({ children, image, persona }: IDashbo
               )}
             </nav>
           </div>
-          <div className='mt-auto p-4'>
-            {persona !== typePersona.user && (
-              <Card x-chunk='dashboard-02-chunk-0'>
-                <CardHeader className='p-2 pt-0 md:p-4'>
-                  <CardTitle>Atualize para Pro</CardTitle>
-                  <CardDescription>
-                    Desbloqueie as avaliações no seu perfil e aumente as chances de ter
-                    seu serviço contratado.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className='p-2 pt-0 md:p-4 md:pt-0'>
-                  <Button size='sm' className='w-full'>
-                    Conheça o pro
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+          {!isPro && (
+            <div className='mt-auto p-4'>
+              {persona !== typePersona.user && (
+                <Card x-chunk='dashboard-02-chunk-0'>
+                  <CardHeader className='p-2 pt-0 md:p-4'>
+                    <CardTitle>Atualize para Pro</CardTitle>
+                    <CardDescription>
+                      Desbloqueie as avaliações no seu perfil e aumente as chances de ter
+                      seu serviço contratado.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className='p-2 pt-0 md:p-4 md:pt-0'>
+                    <Link href={'/system/dashboard/my-plan'}>
+                      <Button size='sm' className='w-full'>
+                        Conheça o pro
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
         </div>
       </div>
       <div className='flex flex-col'>
@@ -133,25 +137,30 @@ export default function DashboardTemplate ({ children, image, persona }: IDashbo
                     Meu plano
                 </NavLink>
               </nav>
-              <div className='mt-auto'>
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Atualize para Pro</CardTitle>
-                    <CardDescription>
-                      Desbloqueie as avaliações no seu perfil e deaumente as chances de ter
-                      seu serviço contratado.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button size='sm' className='w-full'>
-                      Conheça o pro
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
+              {!isPro && (
+                <div className='mt-auto'>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Atualize para Pro</CardTitle>
+                      <CardDescription>
+                        Desbloqueie as avaliações no seu perfil e deaumente as chances de ter
+                        seu serviço contratado.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Link href={'/system/dashboard/my-plan'}>
+                        <Button size='sm' className='w-full'>
+                        Conheça o pro
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </SheetContent>
           </Sheet>
-          <div className='flex w-full justify-end'>
+          <div className='flex w-full items-center justify-between'>
+            <p className='text-primary'>Suporte: <span className='font-semibold'>(98) 989101285</span></p>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant='secondary' size='icon' className='rounded-full'>
@@ -170,7 +179,11 @@ export default function DashboardTemplate ({ children, image, persona }: IDashbo
               <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className='cursor-pointer'>Meu plano</DropdownMenuItem>
+                {persona !== typePersona.user && (
+                  <Link href={'/system/dashboard/my-plan'}>
+                    <DropdownMenuItem className='cursor-pointer'>Meu plano</DropdownMenuItem>
+                  </Link>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className='cursor-pointer' onClick={handlerLogout}>Sair</DropdownMenuItem>
               </DropdownMenuContent>

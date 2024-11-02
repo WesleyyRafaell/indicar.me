@@ -16,6 +16,7 @@ export interface IProfessional {
   instagram: string | null;
   whatsapp: string | null;
   linkedin: string | null;
+  isPro: boolean | null;
 }
 
 export interface IProfessionalSelectPros{

@@ -24,6 +24,7 @@ export default function ProfessionalDetailsPage ({
   reviews,
   professionalDetails,
   accountId,
+  isPro,
 }: IProfessionalDetailsProps
 ) {
   const router = useRouter();
@@ -92,70 +93,77 @@ export default function ProfessionalDetailsPage ({
           <Button>Enviar mensagem</Button>
         </Link>
       </Flex>
-      <Flex className='mb-4 mt-10 w-full items-start justify-center'>
-        <Flex className='w-full flex-col items-center gap-4 md:w-[450px]'>
-          <Flex className='gap-3'>
-            <p className='text-4xl font-bold text-primary'>{getMedia(reviews.map(item => item.rating))}</p>
-            <Flex className='flex-col'>
-              <p className='text-slate-600'>{reviews.length} avaliações</p>
-              <ReactStars
-                value={parseFloat(getMedia(reviews.map(item => item.rating)))}
-                isEdit={false}
-                activeColors={[ '#FFCE00' ]}
-                size={20}
-              />
+      {!isPro && (
+        <Flex className='mt-10 w-full justify-center'>
+          <p className='text-primary'>Este profissional ainda não liberou as avaliações em seu perfil.</p>
+        </Flex>
+      )}
+      {isPro && (
+        <Flex className='mb-4 mt-10 w-full items-start justify-center'>
+          <Flex className='w-full flex-col items-center gap-4 md:w-[450px]'>
+            <Flex className='gap-3'>
+              <p className='text-4xl font-bold text-primary'>{getMedia(reviews.map(item => item.rating))}</p>
+              <Flex className='flex-col'>
+                <p className='text-slate-600'>{reviews.length} avaliações</p>
+                <ReactStars
+                  value={parseFloat(getMedia(reviews.map(item => item.rating)))}
+                  isEdit={false}
+                  activeColors={[ '#FFCE00' ]}
+                  size={20}
+                />
+              </Flex>
+            </Flex>
+            {professionalDetails?.id !== accountId && (
+              <form className='my-5 w-full' onSubmit={handleSubmit(onSubmit)}>
+                <Flex className='w-full flex-col gap-5'>
+                  <p className='font-semibold text-slate-600'>Nova avaliação</p>
+                  <div className='flex w-full flex-col space-y-1.5'>
+                    <Label htmlFor='description'>Seu nível de satisfação:</Label>
+                    <ReactStars
+                      onChange={onChange}
+                      value={star}
+                      isEdit={true}
+                      activeColors={[ '#FFCE00' ]}
+                      size={20}
+                    />
+                  </div>
+                  <div className='flex w-full flex-col space-y-1.5'>
+                    <Label htmlFor='description'>Descrição</Label>
+                    <Textarea
+                      id='description'
+                      placeholder='Sua avaliação aqui'
+                      {...register('description')}
+                    />
+                    <p className='text-xs text-red-600'>{errors?.description?.message || ''}</p>
+                  </div>
+                  <Flex className='w-full justify-center'>
+                    <Button className='px-16'>Avaliar</Button>
+                  </Flex>
+                </Flex>
+              </form>
+            )}
+            <Flex className='w-full flex-col items-center gap-5'>
+              {reviews.map(review => (
+                <Flex key={review.id} className='w-full flex-col rounded-sm border border-slate-300 p-2 md:w-[450px]'>
+                  <p className='text-lg'>{review.name}</p>
+                  <Flex className='w-full justify-between'>
+                    <ReactStars
+                      value={review.rating}
+                      isEdit={false}
+                      activeColors={[ '#FFCE00' ]}
+                      size={20}
+                    />
+                    <p className='text-slate-600'>{formatDate(review.date, 'dd/MM/yyyy')}</p>
+                  </Flex>
+                  <p className='mt-2 text-sm text-slate-600'>
+                    {review.description}
+                  </p>
+                </Flex>
+              ))}
             </Flex>
           </Flex>
-          {professionalDetails?.id !== accountId && (
-            <form className='my-5 w-full' onSubmit={handleSubmit(onSubmit)}>
-              <Flex className='w-full flex-col gap-5'>
-                <p className='font-semibold text-slate-600'>Nova avaliação</p>
-                <div className='flex w-full flex-col space-y-1.5'>
-                  <Label htmlFor='description'>Seu nível de satisfação:</Label>
-                  <ReactStars
-                    onChange={onChange}
-                    value={star}
-                    isEdit={true}
-                    activeColors={[ '#FFCE00' ]}
-                    size={20}
-                  />
-                </div>
-                <div className='flex w-full flex-col space-y-1.5'>
-                  <Label htmlFor='description'>Descrição</Label>
-                  <Textarea
-                    id='description'
-                    placeholder='Sua avaliação aqui'
-                    {...register('description')}
-                  />
-                  <p className='text-xs text-red-600'>{errors?.description?.message || ''}</p>
-                </div>
-                <Flex className='w-full justify-center'>
-                  <Button className='px-16'>Avaliar</Button>
-                </Flex>
-              </Flex>
-            </form>
-          )}
-          <Flex className='w-full flex-col items-center gap-5'>
-            {reviews.map(review => (
-              <Flex key={review.id} className='w-full flex-col rounded-sm border border-slate-300 p-2 md:w-[450px]'>
-                <p className='text-lg'>{review.name}</p>
-                <Flex className='w-full justify-between'>
-                  <ReactStars
-                    value={review.rating}
-                    isEdit={false}
-                    activeColors={[ '#FFCE00' ]}
-                    size={20}
-                  />
-                  <p className='text-slate-600'>{formatDate(review.date, 'dd/MM/yyyy')}</p>
-                </Flex>
-                <p className='mt-2 text-sm text-slate-600'>
-                  {review.description}
-                </p>
-              </Flex>
-            ))}
-          </Flex>
         </Flex>
-      </Flex>
+      )}
     </Card>
   );
 }

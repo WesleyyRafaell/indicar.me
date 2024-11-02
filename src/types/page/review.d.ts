@@ -17,4 +17,5 @@ export interface IProfessionalDetailsProps {
   reviews: IReviewProps[];
   professionalDetails: IProfessional;
   accountId: string;
+  isPro?: boolean;
 }

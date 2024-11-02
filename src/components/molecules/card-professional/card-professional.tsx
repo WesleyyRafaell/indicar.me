@@ -42,22 +42,29 @@ const CardProfessional = (props: IProfessional) => {
           <p className='w-full font-semibold text-slate-600 md:w-auto md:max-w-[240px]'>{props.typeProfessional} / {getExperience(props.experience || '0')}</p>
         </Flex>
       </Flex>
-      <Flex className='justify-center py-4'>
-        <Flex className='flex-col gap-2'>
-          <Flex className='gap-3'>
-            <p className='text-4xl font-bold text-primary'>{getMedia(reviews.map(item => item.rating))}</p>
-            <Flex className='flex-col'>
-              <p className='text-slate-600'>{reviews.length} avaliações</p>
-              <ReactStars
-                value={parseFloat(getMedia(reviews.map(item => item.rating)))}
-                isEdit={false}
-                activeColors={[ '#FFCE00' ]}
-                size={20}
-              />
+      {reviews.length === 0 && (
+        <Flex className='w-full justify-center py-6'>
+          <p className='text-primary'>Sem avaliações ainda</p>
+        </Flex>
+      )}
+      {reviews.length > 0 && (
+        <Flex className='justify-center py-4'>
+          <Flex className='flex-col gap-2'>
+            <Flex className='gap-3'>
+              <p className='text-4xl font-bold text-primary'>{getMedia(reviews.map(item => item.rating))}</p>
+              <Flex className='flex-col'>
+                <p className='text-slate-600'>{reviews.length} avaliações</p>
+                <ReactStars
+                  value={parseFloat(getMedia(reviews.map(item => item.rating)))}
+                  isEdit={false}
+                  activeColors={[ '#FFCE00' ]}
+                  size={20}
+                />
+              </Flex>
             </Flex>
           </Flex>
         </Flex>
-      </Flex>
+      )}
       <Card className='mt-3 px-3 py-2'>
         <CardTitle className='text-base font-bold text-primary'>Um pouco sobre mim</CardTitle>
         <CardDescription className='max-h-[100px] overflow-scroll overflow-x-hidden'>
