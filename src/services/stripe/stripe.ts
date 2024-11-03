@@ -63,14 +63,14 @@ export const createCheckoutSession = async (
 
     const session = await stripe.billingPortal.sessions.create({
       customer: customer.id,
-      return_url: 'http://localhost:3000/system/dashboard/my-plan',
+      return_url: 'https://indicar-me.vercel.app/system/dashboard/my-plan',
       flow_data: {
         type: 'subscription_update_confirm',
         after_completion: {
           type: 'redirect',
           redirect: {
             return_url:
-              'http://localhost:3000/system/dashboard/my-plan?success=true',
+              'https://indicar-me.vercel.app/system/dashboard/my-plan?success=true',
           },
         },
         subscription_update_confirm: {
