@@ -1,36 +1,35 @@
-/* eslint-disable no-console */
-import {
-  handleProcessWebhookUpdatedSubscription,
-  stripe,
-} from '@/services/stripe/stripe';
-import { headers } from 'next/headers';
+import { buffer } from 'micro';
+import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
-export async function POST (req: Request) {
-  const body = await req.text();
-  const signature = headers().get('Stripe-Signature') as string;
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-  let event: Stripe.Event;
+const stripe = new Stripe(process.env.STRIPE_SECRET ?? '', {
+  apiVersion: '2024-09-30.acacia',
+});
+const webhookSecret = 'secret';
 
+export default async function handler (req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).send('Method Not Allowed');
+  }
+
+  const rawBody = await buffer(req);
+  const sig = req.headers['stripe-signature']!;
+
+  let stripeEvent;
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET as string
-    );
-  } catch (error: any) {
-    console.error(`Webhook Error: ${error.message}`);
-    return new Response(`Webhook Error: ${error.message}`, { status: 400 });
+    stripeEvent = stripe.webhooks.constructEvent(rawBody.toString(), sig, webhookSecret);
+    res.status(200).send('OK');
+  } catch (err) {
+    if (err instanceof Error)
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    return res.status(400).send('Signature Webhook Error');
   }
 
-  switch (event.type) {
-    case 'customer.subscription.created':
-    case 'customer.subscription.updated':
-      await handleProcessWebhookUpdatedSubscription(event.data);
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
-
-  return new Response('{ "received": true }', { status: 200 });
+  console.log(stripeEvent);
 }
