@@ -1,35 +1,37 @@
-import { buffer } from 'micro';
-import { NextApiRequest, NextApiResponse } from 'next';
+import {
+  handleProcessWebhookUpdatedSubscription,
+  stripe,
+} from '@/services/stripe/stripe';
+import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-const stripe = new Stripe(process.env.STRIPE_SECRET ?? '', {
-  apiVersion: '2024-09-30.acacia',
-});
-const webhookSecret = 'secret';
+export async function POST (request: NextRequest) {
+  const payload = await request.text();
+  const signature = request.headers.get('stripe-signature') as string;
 
-export default async function handler (req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
-  }
+  let event: Stripe.Event;
 
-  const rawBody = await buffer(req);
-  const sig = req.headers['stripe-signature']!;
-
-  let stripeEvent;
   try {
-    stripeEvent = stripe.webhooks.constructEvent(rawBody.toString(), sig, webhookSecret);
-    res.status(200).send('OK');
+    event = stripe.webhooks.constructEvent(payload, signature, webhookSecret);
   } catch (err) {
-    if (err instanceof Error)
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    return res.status(400).send('Signature Webhook Error');
+    console.error('Webhook signature verification failed.', err);
+    return NextResponse.json(
+      { error: 'Webhook signature verification failed.' },
+      { status: 400 }
+    );
   }
 
-  console.log(stripeEvent);
+  switch (event.type) {
+    case 'customer.subscription.updated':
+    case 'customer.subscription.deleted':
+      const subscription = event.data.object as Stripe.Subscription;
+      await handleProcessWebhookUpdatedSubscription({ object: subscription });
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  return NextResponse.json({ received: true });
 }
