@@ -1,37 +1,36 @@
+/* eslint-disable no-console */
 import {
   handleProcessWebhookUpdatedSubscription,
   stripe,
 } from '@/services/stripe/stripe';
-import { NextRequest, NextResponse } from 'next/server';
+import { headers } from 'next/headers';
 import Stripe from 'stripe';
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
-export async function POST (request: NextRequest) {
-  const payload = await request.text();
-  const signature = request.headers.get('stripe-signature') as string;
+export async function POST (req: Request) {
+  const body = await req.text();
+  const signature = headers().get('Stripe-Signature') as string;
 
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(payload, signature, webhookSecret);
-  } catch (err) {
-    console.error('Webhook signature verification failed.', err);
-    return NextResponse.json(
-      { error: 'Webhook signature verification failed.' },
-      { status: 400 }
+    event = stripe.webhooks.constructEvent(
+      body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET as string
     );
+  } catch (error: any) {
+    console.error(`Webhook Error: ${error.message}`);
+    return new Response(`Webhook Error: ${error.message}`, { status: 400 });
   }
 
   switch (event.type) {
+    case 'customer.subscription.created':
     case 'customer.subscription.updated':
-    case 'customer.subscription.deleted':
-      const subscription = event.data.object as Stripe.Subscription;
-      await handleProcessWebhookUpdatedSubscription({ object: subscription });
+      await handleProcessWebhookUpdatedSubscription(event.data);
       break;
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
 
-  return NextResponse.json({ received: true });
+  return new Response('{ "received": true }', { status: 200 });
 }
